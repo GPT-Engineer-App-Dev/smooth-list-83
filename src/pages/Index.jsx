@@ -45,8 +45,8 @@ const Index = () => {
       });
       const responseData = await response.json();
       if (response.ok) {
-        setIsLoggedIn(true);
-        setToken(responseData.access_token);
+        setIsLoggedIn(response.ok);
+        setToken(response.ok ? responseData.access_token : null);
         toast({
           title: "Login successful.",
           status: "success",
@@ -78,7 +78,7 @@ const Index = () => {
       });
       const responseData = await response.json();
       if (response.ok) {
-        setToken(responseData.access_token);
+        setToken(response.ok ? responseData.access_token : null);
         toast({
           title: "Signup successful.",
           status: "success",
