@@ -7,6 +7,7 @@ const Index = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
   const [newTodoTitle, setNewTodoTitle] = useState("");
   const [newTodoContent, setNewTodoContent] = useState("");
   const toast = useToast();
@@ -23,8 +24,7 @@ const Index = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Authorization should include the token retrieved from the login API
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       const data = await response.json();
@@ -43,8 +43,10 @@ const Index = () => {
         },
         body: JSON.stringify({ email, password }),
       });
+      const responseData = await response.json();
       if (response.ok) {
         setIsLoggedIn(true);
+        setToken(responseData.access_token);
         toast({
           title: "Login successful.",
           status: "success",
@@ -74,7 +76,9 @@ const Index = () => {
         },
         body: JSON.stringify({ email, password }),
       });
+      const responseData = await response.json();
       if (response.ok) {
+        setToken(responseData.access_token);
         toast({
           title: "Signup successful.",
           status: "success",
@@ -101,8 +105,7 @@ const Index = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Authorization should include the token retrieved from the login API
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ title: newTodoTitle, content: newTodoContent }),
       });
